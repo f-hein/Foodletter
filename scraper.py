@@ -107,3 +107,7 @@ def get_all_menus():
     for single_menu in map(lambda cls: cls().get_todays_menu(), list_of_classes):
         all_menus.update(single_menu)
     return all_menus
+
+
+def check_if_all_menus_exist() -> bool:
+    return '' not in get_all_menus().values()
