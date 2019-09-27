@@ -16,6 +16,7 @@ Create a mailing list:
 
 - [ ] Delete sender's email from mailing list if email body contains specific string.
 
+Other ideas:
 
 - [ ] Create a footer containing a link to NGO action site, ie. Pajacyk by Polish Humanitarian Action
 
