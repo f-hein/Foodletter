@@ -4,8 +4,8 @@ import os
 
 from apscheduler.schedulers.blocking import BlockingScheduler
 
-from mailer import MailSender, MailChecker, SubscriberList, check_if_last_mails_were_sent_today
-from scraper import check_if_all_menus_exist
+from mailer import MailSender, MailChecker, SubscriberList, mails_were_sent_today
+from scraper import all_menus_exist
 
 logs_filepath = 'mail_logs.log'
 logging.basicConfig(filename=logs_filepath, filemode='w', format='%(asctime)s %(message)s', level=logging.INFO)
@@ -14,7 +14,7 @@ logging.getLogger('apscheduler').setLevel(logging.CRITICAL)
 
 def run_foodletter():
     MailChecker().check_for_subscription_emails()
-    if not check_if_last_mails_were_sent_today() and check_if_all_menus_exist():
+    if not mails_were_sent_today() and all_menus_exist():
         list_of_emails = SubscriberList.get_mails()
         MailSender().send_email_to_many_recipients(list_of_emails)
 

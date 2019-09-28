@@ -82,9 +82,9 @@ class CockpeatMenu:
 
     @staticmethod
     def _correct_text(text):
-        re.sub(',[ ]*$', '', text)
-        re.sub(',[ ]+', ', ', text)
-        re.sub('[a-zA-Z]*(,)[a-zA-Z]*', ', ', text)
+        text = re.sub(',[ ]*$', '', text)
+        text = re.sub(',[ ]+', ', ', text)
+        text = re.sub('[\W]*(,)[\W]*', ', ', text)
         return text.replace(' ,', ',')\
                    .replace(' :', ': ')\
                    .replace(' *', ' \n')\
@@ -110,5 +110,5 @@ def get_all_menus() -> dict:
     return all_menus
 
 
-def check_if_all_menus_exist() -> bool:
+def all_menus_exist() -> bool:
     return '' not in get_all_menus().values()

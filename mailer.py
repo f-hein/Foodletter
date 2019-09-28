@@ -109,7 +109,7 @@ class SubscriberList:
         return list_of_email_addresses
 
 
-def check_if_last_mails_were_sent_today():
+def mails_were_sent_today():
     with open(state_filepath, 'r') as state_file:
         last_sent_date = datetime.strptime(state_file.readlines()[1], "%Y-%m-%d").date()
     return last_sent_date == date.today()
