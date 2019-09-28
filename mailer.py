@@ -9,8 +9,10 @@ from email.mime.text import MIMEText
 from bot_credentials import gmail_user, gmail_password
 from scraper import check_if_all_menus_exist, get_all_menus
 
-logging.basicConfig(filename='mail_sender.log', filemode='w', format='%(asctime)s %(message)s', level=logging.INFO)
-subscribers_list_fp = 'subscribers_list.txt'
+logs_filepath = 'mail_logs.log'
+subs_filepath = 'subscribers_list.txt'
+
+logging.basicConfig(filename=logs_filepath, filemode='w', format='%(asctime)s %(message)s', level=logging.INFO)
 
 
 class MailSender:
@@ -75,8 +77,29 @@ class SubscriberList:
 
     @staticmethod
     def add(email):
-        pass
+        with open(subs_filepath, 'a+') as subs_file:
+            subs_file.seek(0)
+            file_content = subs_file.read()
+            if email not in file_content:
+                subs_file.write(email+'\n')
+                logging.info(f"Mail added to subscribers list: {email}")
+            else:
+                logging.error(f"Mail already added to subscribers list: {email}")
 
     @staticmethod
     def delete(email):
-        pass
+        with open(subs_filepath, 'r+') as subs_file:
+            lines = subs_file.readlines()
+            subs_file.seek(0)
+            for line in lines:
+                if email not in line:
+                    subs_file.write(line)
+                else:
+                    logging.info(f"Mail deleted from subscribers list: {email}")
+            subs_file.truncate()
+
+    @staticmethod
+    def get_mails():
+        with open(subs_filepath, 'r') as subs_file:
+            list_of_mails = list(map(lambda x: x.rstrip(), subs_file.readlines()))
+        return list_of_mails

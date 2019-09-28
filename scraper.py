@@ -76,6 +76,7 @@ class CockpeatMenu:
     def _correct_text(text):
         re.sub(',[ ]*$', '', text)
         re.sub(',[ ]+', ', ', text)
+        re.sub('[a-zA-Z]*(,)[a-zA-Z]*', ', ', text)
         return text.replace(' ,', ',')\
                    .replace(' :', ': ')\
                    .replace(' *', ' \n')
