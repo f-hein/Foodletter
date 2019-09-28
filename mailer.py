@@ -9,7 +9,7 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
 from bot_credentials import gmail_user, gmail_password
-from scraper import check_if_all_menus_exist, get_all_menus
+from scraper import all_menus_exist, get_all_menus
 
 subs_filepath = 'subscribers_list.txt'
 state_filepath = 'logger_state.txt'
@@ -18,7 +18,7 @@ state_filepath = 'logger_state.txt'
 class MailSender:
 
     def send_email_to_many_recipients(self, recipients: list) -> None:
-        if check_if_all_menus_exist():
+        if all_menus_exist():
             msg_body = self._get_email_body()
             for recipient in recipients:
                 self._send_email(recipient, msg_body)
@@ -73,12 +73,12 @@ class MailChecker:
             _, body = self.imap.fetch(e_id, '(BODY[TEXT] BODY[HEADER.FIELDS (FROM)])')
             sender_email = re.findall('<(.*)>', str(body[1][1]))[0]
             if 'SUBSCRIBE' in body[1][1]:
-                SubscriberList.add(sender_email)
+                MailingList.add(sender_email)
             elif 'UNSUBSCRIBE' in body[1][1]:
-                SubscriberList.delete(sender_email)
+                MailingList.delete(sender_email)
 
 
-class SubscriberList:
+class MailingList:
     @staticmethod
     def add(email: str) -> None:
         with open(subs_filepath, 'a+') as subs_file:
