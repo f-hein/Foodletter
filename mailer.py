@@ -16,10 +16,13 @@ state_filepath = 'logger_state.txt'
 
 
 class MailSender:
-    @staticmethod
-    def _log_action_to_file() -> None:
-        with open(state_filepath, 'w') as state_file:
-            state_file.write(f"Last sent:\n{date.today()}")
+
+    def send_email_to_many_recipients(self, recipients: list) -> None:
+        if check_if_all_menus_exist():
+            msg_body = self._get_email_body()
+            for recipient in recipients:
+                self._send_email(recipient, msg_body)
+            self._log_action_to_file()
 
     @staticmethod
     def _create_email(recipent: str, message: str) -> MIMEMultipart:
@@ -51,12 +54,10 @@ class MailSender:
         logging.info(f"Mail sent to {recipient}")
         server.close()
 
-    def send_email_to_many_recipients(self, recipients: list) -> None:
-        if check_if_all_menus_exist():
-            msg_body = self._get_email_body()
-            for recipient in recipients:
-                self._send_email(recipient, msg_body)
-            self._log_action_to_file()
+    @staticmethod
+    def _log_action_to_file() -> None:
+        with open(state_filepath, 'w') as state_file:
+            state_file.write(f"Last sent:\n{date.today()}")
 
 
 class MailChecker:

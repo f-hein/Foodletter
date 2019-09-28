@@ -17,6 +17,12 @@ class AstraMenu:
         self._get_tables_from_content()
         self._read_tables()
 
+    def get_todays_menu(self) -> dict:
+        if self.day_of_the_week < 5:
+            return {'astra_menu': self.weekly_menu[self.day_of_the_week]}
+        else:
+            return {'astra_menu': ''}
+
     def _get_page(self):
         self.page = requests.get(self.menu_url)
 
@@ -40,12 +46,6 @@ class AstraMenu:
             day_menu = ''.join(day_menu)
             self.weekly_menu.append(day_menu)
 
-    def get_todays_menu(self) -> dict:
-        if self.day_of_the_week < 5:
-            return {'astra_menu': self.weekly_menu[self.day_of_the_week]}
-        else:
-            return {'astra_menu': ''}
-
 
 class CockpeatMenu:
     def __init__(self):
@@ -58,9 +58,18 @@ class CockpeatMenu:
         self._create_soup_object()
         self._get_posts_from_content()
 
+    def get_todays_menu(self) -> dict:
+        menu = ''
+        if self.day_of_the_week < 5:
+            if type(self.weekdays[self.day_of_the_week]) is list:
+                for day in self.weekdays[self.day_of_the_week]:
+                    menu = self._search_for_menu_by_day_name(day)
+            else:
+                return {'cockpeat_menu': self._search_for_menu_by_day_name(self.weekdays[self.day_of_the_week])}
+        return {'cockpeat_menu': menu}
+
     def _get_page(self):
         self.page = requests.get(self.menu_url)
-        return self.page
 
     def _decode_content(self):
         self.content = self.page.content.decode('utf-8', errors='ignore')
@@ -70,7 +79,6 @@ class CockpeatMenu:
 
     def _get_posts_from_content(self):
         self.posts = self.soup.find_all('div', class_='_427x')
-        return self.posts
 
     @staticmethod
     def _correct_text(text):
@@ -92,16 +100,6 @@ class CockpeatMenu:
                     todays_menu += self._correct_text(menu_entry.text) + '\n'
                 break
         return todays_menu
-
-    def get_todays_menu(self) -> dict:
-        menu = ''
-        if self.day_of_the_week < 5:
-            if type(self.weekdays[self.day_of_the_week]) is list:
-                for day in self.weekdays[self.day_of_the_week]:
-                    menu = self._search_for_menu_by_day_name(day)
-            else:
-                return {'cockpeat_menu': self._search_for_menu_by_day_name(self.weekdays[self.day_of_the_week])}
-        return {'cockpeat_menu': menu}
 
 
 def get_all_menus() -> dict:
