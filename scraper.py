@@ -64,6 +64,8 @@ class CockpeatMenu:
             if type(self.weekdays[self.day_of_the_week]) is list:
                 for day in self.weekdays[self.day_of_the_week]:
                     menu = self._search_for_menu_by_day_name(day)
+                    if menu:
+                        break
             else:
                 return {'cockpeat_menu': self._search_for_menu_by_day_name(self.weekdays[self.day_of_the_week])}
         return {'cockpeat_menu': menu}

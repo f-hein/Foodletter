@@ -1,18 +1,17 @@
 # -*- coding: utf-8 -*-
-
 import imaplib
 import logging
 import re
 import smtplib
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
+from pathlib import Path
 
 from bot_credentials import gmail_user, gmail_password
 from scraper import all_menus_exist, get_all_menus
 
 subs_filepath = 'subscribers_list.txt'
-state_filepath = 'logger_state.txt'
 
 
 class MailSender:
@@ -22,7 +21,7 @@ class MailSender:
             msg_body = self._get_email_body()
             for recipient in recipients:
                 self._send_email(recipient, msg_body)
-            self._log_action_to_file()
+            State().log_todays_date()
 
     @staticmethod
     def _create_email(recipent: str, message: str) -> MIMEMultipart:
@@ -54,11 +53,6 @@ class MailSender:
         logging.info(f"Mail sent to {recipient}")
         server.close()
 
-    @staticmethod
-    def _log_action_to_file() -> None:
-        with open(state_filepath, 'w') as state_file:
-            state_file.write(f"Last sent:\n{date.today()}")
-
 
 class MailChecker:
     def __init__(self):
@@ -72,9 +66,9 @@ class MailChecker:
         for e_id in unread_mails_ids:
             _, body = self.imap.fetch(e_id, '(BODY[TEXT] BODY[HEADER.FIELDS (FROM)])')
             sender_email = re.findall('<(.*)>', str(body[1][1]))[0]
-            if 'SUBSCRIBE' in body[1][1]:
+            if 'SUBSCRIBE' in str(body[0][1]):
                 MailingList.add(sender_email)
-            elif 'UNSUBSCRIBE' in body[1][1]:
+            elif 'UNSUBSCRIBE' in str(body[0][1]):
                 MailingList.delete(sender_email)
 
 
@@ -109,7 +103,21 @@ class MailingList:
         return list_of_email_addresses
 
 
-def mails_were_sent_today():
-    with open(state_filepath, 'r') as state_file:
-        last_sent_date = datetime.strptime(state_file.readlines()[1], "%Y-%m-%d").date()
-    return last_sent_date == date.today()
+class State:
+    def __init__(self):
+        self.state_filepath = 'logger_state.txt'
+
+    def mails_were_sent_today(self):
+        with open(self.state_filepath, 'r') as state_file:
+            last_sent_date = datetime.strptime(state_file.readlines()[1], "%Y-%m-%d").date()
+        return last_sent_date == date.today()
+
+    def create_state_file(self):
+        state_file = Path(self.state_filepath)
+        if not state_file.exists():
+            with open(self.state_filepath, 'w') as state_file:
+                state_file.write(f"Last sent:\n{date.today() - timedelta(1)}")
+
+    def log_todays_date(self):
+        with open(self.state_filepath, 'w') as state_file:
+            state_file.write(f"Last sent:\n{date.today()}")
