@@ -5,4 +5,3 @@ Foodsletter is a simple POC mailing app providing you with the newest menu of Co
 - [ ] Use 'unidecode' module for days of the week
 - [ ] Add Obiadeo
 - [ ] Send mail to a newly subscribed person IF foodletter was sent that day
-- [ ] Add to the mailing list people who put 'SUBSCRIBE' in the mail's subject instead of its body
