@@ -66,10 +66,10 @@ class MailChecker:
         for e_id in unread_mails_ids:
             _, body = self.imap.fetch(e_id, '(BODY[TEXT] BODY[HEADER.FIELDS (FROM)])')
             sender_email = re.findall('<(.*)>', str(body[1][1]))[0]
-            if 'SUBSCRIBE' in str(body[0][1]):
-                MailingList.add(sender_email)
-            elif 'UNSUBSCRIBE' in str(body[0][1]):
+            if 'UNSUBSCRIBE' in str(body[0][1]):
                 MailingList.delete(sender_email)
+            elif 'SUBSCRIBE' in str(body[0][1]):
+                MailingList.add(sender_email)
 
 
 class MailingList:

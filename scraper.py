@@ -4,6 +4,7 @@ from datetime import datetime
 import requests
 import re
 from bs4 import BeautifulSoup
+from tools import calc_levenshtein
 
 
 class AstraMenu:
@@ -44,14 +45,21 @@ class AstraMenu:
                 if day_menu.index(word) != 0:
                     day_menu[day_menu.index(word)] += '\n'
             day_menu = ''.join(day_menu)
+            day_menu = self._correct_text(day_menu)
             self.weekly_menu.append(day_menu)
+
+    @staticmethod
+    def _correct_text(text):
+        text = re.sub(r'^\s+', '', text)
+        text = re.sub(r'\n[ ]+', '\n', text)
+        text = re.sub(r'[ ]{2,}', ' ', text)
+        return text
 
 
 class CockpeatMenu:
     def __init__(self):
         self.menu_url = 'https://www.facebook.com/pg/COCKPEAT/posts'
-        self.weekdays = [['poniedziałek', 'poniedzialek'], 'wtorek', ['środa', 'sroda'],
-                         'czwartek', ['piątek', 'piatek']]
+        self.weekdays = ['poniedzialek', 'wtorek', 'sroda', 'czwartek', 'piatek']
         self.day_of_the_week = datetime.today().weekday()
         self._get_page()
         self._decode_content()
@@ -61,13 +69,7 @@ class CockpeatMenu:
     def get_todays_menu(self) -> dict:
         menu = ''
         if self.day_of_the_week < 5:
-            if type(self.weekdays[self.day_of_the_week]) is list:
-                for day in self.weekdays[self.day_of_the_week]:
-                    menu = self._search_for_menu_by_day_name(day)
-                    if menu:
-                        break
-            else:
-                return {'cockpeat_menu': self._search_for_menu_by_day_name(self.weekdays[self.day_of_the_week])}
+            menu = self._search_for_menu_by_day_name(self.weekdays[self.day_of_the_week])
         return {'cockpeat_menu': menu}
 
     def _get_page(self):
@@ -87,19 +89,31 @@ class CockpeatMenu:
         text = re.sub(',[ ]*$', '', text)
         text = re.sub(',[ ]+', ', ', text)
         text = re.sub('[\W]*(,)[\W]*', ', ', text)
+        text = re.sub(r'[ ]+', ' ', text)
         return text.replace(' ,', ',')\
                    .replace(' :', ': ')\
                    .replace(' *', ' \n')\
                    .replace('  -', '\n  ')
 
+    @staticmethod
+    def _get_day_from_post(text):
+        text = re.sub(r'[ ]{2,}', ' ', text)
+        try:
+            if re.findall('(?<=menu )[a-ząćęłńóśźż]+', text)[0]:
+                return re.findall('(?<=menu )[a-ząćęłńóśźż]+', text)[0]
+        except IndexError:
+            return ''
+
     def _search_for_menu_by_day_name(self, day_name):
         todays_menu = ''
         for post in self.posts:
-            if f"menu {day_name}" in post.text.lower() \
-                    and ' o ' not in post.text.lower().split('menu')[0]:
+            day_in_post = self._get_day_from_post(post.text.lower())
+            if ' o ' not in post.text.lower().split('menu')[0] and day_in_post \
+                    and calc_levenshtein(day_name, day_in_post) <= 2:  # issue: won't grab a post if there is 'wtorjek' at 'sroda'
                 menu_entries = post.find_all('p')
                 for menu_entry in menu_entries:
-                    todays_menu += self._correct_text(menu_entry.text) + '\n'
+                    if menu_entries.index(menu_entry) > 0:  # cuts out the header "Menu ${weekday} from the post"
+                        todays_menu += self._correct_text(menu_entry.text) + '\n'
                 break
         return todays_menu
 
