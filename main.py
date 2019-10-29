@@ -9,7 +9,7 @@ from scraper import all_menus_exist
 
 logs_filepath = 'mail_logs.log'
 logging.basicConfig(filename=logs_filepath, filemode='w', format='%(asctime)s %(message)s', level=logging.INFO)
-logging.getLogger('apscheduler').setLevel(logging.CRITICAL)
+# logging.getLogger('apscheduler').setLevel(logging.CRITICAL)
 
 
 def run_foodletter():
