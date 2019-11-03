@@ -66,7 +66,7 @@ class MailChecker:
         for e_id in unread_mails_ids:
             _, body = self.imap.fetch(e_id, '(BODY[TEXT] BODY[HEADER.FIELDS (FROM SUBJECT)])')
             sender_email = re.findall('<(.*)>', str(body[1][1]))[0]
-            subject = re.findall('(?<=Subject: )[a-zA-Z ]+', str(body[1][1]))[0]
+            subject = re.findall('(?<=Subject: )[a-zA-Z ]*', str(body[1][1]))[0]
             body = str(body[0][1])
             if 'UNSUBSCRIBE' in body or 'UNSUBSCRIBE' in subject:
                 MailingList.delete(sender_email)
