@@ -9,7 +9,7 @@ from email.mime.text import MIMEText
 from pathlib import Path
 
 from bot_credentials import gmail_user, gmail_password
-from scraper import all_menus_exist, get_all_menus
+from scrapers.all_scrapers import all_menus_exist, get_all_menus
 
 subs_filepath = 'subscribers_list.txt'
 

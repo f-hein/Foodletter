@@ -5,7 +5,7 @@ import os
 from apscheduler.schedulers.blocking import BlockingScheduler
 
 from mailer import MailSender, MailChecker, MailingList, State
-from scraper import all_menus_exist
+from scrapers.all_scrapers import all_menus_exist
 
 logs_filepath = 'mail_logs.log'
 logging.basicConfig(filename=logs_filepath, filemode='w', format='%(asctime)s %(message)s', level=logging.INFO)
