@@ -43,7 +43,7 @@ class MailSender:
         template = "\n### {} ###\n{}"
         formatted_mesage = f'{date.today()}\n'
         if body:
-            return formatted_mesage + body + footer
+            return body + footer
         for place_name, menu in get_all_menus().items():
             formatted_mesage += template.format(place_name.replace("_", " ").upper(), menu)
         formatted_mesage += footer
