@@ -4,7 +4,7 @@ import os
 
 from apscheduler.schedulers.blocking import BlockingScheduler
 
-from mailer import MailSender, MailChecker, MailingList, State
+from emails.mailer import MailSender, MailChecker, MailingList, State
 from scrapers.all_scrapers import all_menus_exist
 
 logs_filepath = 'mail_logs.log'
