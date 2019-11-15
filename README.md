@@ -4,4 +4,5 @@ Foodsletter is a simple POC mailing app providing you with the newest menu of Co
 ### TODO:
 - [x] Add Obiadeo
 - [ ] Send mail to a newly subscribed person IF foodletter was sent that day
-- [ ] Send confirmation email to newly subscribed person (!)
+- [x] Send confirmation email to newly subscribed (or unsubscribed) person 
+- [ ] Format output mail (add needed newlines)
