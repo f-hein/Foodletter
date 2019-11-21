@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+import logging
+
 from scrapers.AstraMenu import AstraMenu
 from scrapers.CockpeatMenu import CockpeatMenu
 from scrapers.ObiadeoMenu import ObiadeoMenu
@@ -13,4 +15,9 @@ def get_all_menus() -> dict:
 
 
 def all_menus_exist() -> bool:
-    return '' not in get_all_menus().values()
+    all_menus = get_all_menus()
+    if '' in all_menus.values():
+        for place_name, menu in all_menus.items():
+            if not menu:
+                logging.info(f"{place_name} menu is still empty.")
+    return '' not in all_menus.values()

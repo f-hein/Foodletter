@@ -26,7 +26,7 @@ class MailSender:
         if subject:
             email_object = self._create_email(recipient, msg_body, subject)
         else:
-            email_object = self._create_email(recipient, msg_body, default_subject)
+            email_object = self._create_email(recipient, msg_body, default_subject())
         self._send_email(recipient, email_object)
 
     @staticmethod

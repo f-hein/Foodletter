@@ -4,7 +4,7 @@ from abc import ABC, abstractmethod
 from datetime import datetime
 
 import requests
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup, NavigableString, Tag
 
 
 class FacebookPage(ABC):
@@ -33,12 +33,24 @@ class FacebookPage(ABC):
     def _correct_text(text):
         text = re.sub(',[ ]*$', '', text)
         text = re.sub(',[ ]+', ', ', text)
-        text = re.sub('[\W]*(,)[\W]*', ', ', text)
-        text = re.sub(r'[ ]+', ' ', text)
+        text = re.sub(r'[\W]*(,)[\W]*', ', ', text)
+        text = re.sub('[ ]+', ' ', text)
         return text.replace(' ,', ',') \
             .replace(' :', ': ') \
             .replace(' *', ' \n') \
             .replace('  -', '\n  ')
+
+    @staticmethod
+    def _format_p(entry_from_menu):  # Cockpeat uses this
+        formatted_entry = ''
+        for elem in entry_from_menu.contents:
+            if type(elem) is NavigableString:
+                if elem.string:
+                    formatted_entry += elem.string
+            elif type(elem) is Tag:
+                formatted_entry += elem.text if elem.text else '\n'
+        formatted_entry += '\n'
+        return formatted_entry
 
     @abstractmethod
     def get_todays_menu(self) -> dict:

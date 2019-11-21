@@ -19,8 +19,8 @@ class CockpeatMenu(FacebookPage):
     def _get_day_from_post(text):
         text = re.sub(r'[ ]{2,}', ' ', text)
         try:
-            if re.findall('(?<=menu )[a-ząćęłńóśźż]+', text)[0]:
-                return re.findall('(?<=menu )[a-ząćęłńóśźż]+', text)[0]
+            if re.findall('(?<=menu )[a-zA-ZŚąćęłńóśźż]+', text)[0]:
+                return re.findall('(?<=menu )[a-zA-ZŚąćęłńóśźż]+', text)[0]
         except IndexError:
             return ''
 
@@ -33,6 +33,6 @@ class CockpeatMenu(FacebookPage):
                 menu_entries = post.find_all('p')
                 for menu_entry in menu_entries:
                     if menu_entries.index(menu_entry) > 0:  # cuts out the header "Menu ${weekday} from the post"
-                        todays_menu += self._correct_text(menu_entry.text) + '\n'
+                        todays_menu += self._correct_text(self._format_p(menu_entry))
                 break
         return todays_menu
