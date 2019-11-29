@@ -64,7 +64,7 @@ class MailChecker:
         self.imap.login(gmail_user, gmail_password)
         self.imap.select('INBOX')
 
-    def check_for_subscription_emails(self) -> None:
+    def check_for_subscription_emails(self, send_mails=True) -> None:
         _, response = self.imap.search(None, '(UNSEEN)')
         unread_mails_ids = response[0].split()
         for e_id in unread_mails_ids:
@@ -74,9 +74,14 @@ class MailChecker:
             body = str(body[0][1]).upper()
             if 'UNSUBSCRIBE' in body or 'UNSUBSCRIBE' in subject:
                 MailingList.delete(sender_email)
-                MailSender().send_mail_to_one_recipient(sender_email, subject="Unsubscribed",
-                                                        msg_body="You've been successfully unsubscribed.")
+                if send_mails:
+                    MailSender().send_mail_to_one_recipient(sender_email, subject="Unsubscribed",
+                                                            msg_body="You've been successfully unsubscribed.")
             elif 'SUBSCRIBE' in body or 'SUBSCRIBE' in subject:
                 MailingList.add(sender_email)
-                MailSender().send_mail_to_one_recipient(sender_email, subject="Subscribed",
-                                                        msg_body="You've been successfully subscribed!")
+                if send_mails:
+                    MailSender().send_mail_to_one_recipient(sender_email, subject="Subscribed",
+                                                            msg_body="You've been successfully subscribed!")
+
+    def _rebuild_subscribers_list(self):
+        self.check_for_subscription_emails(send_mails=False)
