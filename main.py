@@ -16,7 +16,7 @@ logging.basicConfig(filename=logs_filepath, filemode='w', format='%(asctime)s %(
 def run_foodletter():
     today = datetime.datetime.today().weekday()
     MailChecker().check_for_subscription_emails()
-    if not State().mails_were_sent_today() and all_menus_exist() and 0 <= today < 5:
+    if 0 <= today < 5 and not State().mails_were_sent_today() and all_menus_exist():
         list_of_emails = MailingList.get_mails()
         MailSender().send_email_to_many_recipients(list_of_emails)
 
