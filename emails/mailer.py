@@ -27,7 +27,11 @@ class MailSender:
             email_object = self._create_email(recipient, msg_body, subject)
         else:
             email_object = self._create_email(recipient, msg_body, default_subject())
-        self._send_email(recipient, email_object)
+        try:
+            self._send_email(recipient, email_object)
+        except Exception as e:  # sometimes smtplib.SMTPRecipientsRefused may occur (?)
+            logging.error(f"Exception caught! {e}")
+            logging.error(f"RECIPIENT: '{recipient}', MSG BODY: '{msg_body}'")
 
     @staticmethod
     def _create_email(recipent: str, msg_body: str, subject: str) -> MIMEMultipart:
