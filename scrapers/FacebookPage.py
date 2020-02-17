@@ -24,7 +24,7 @@ class FacebookPage(ABC):
         self.content = self.page.content.decode('utf-8', errors='ignore')
 
     def _create_soup_object(self):
-        self.soup = BeautifulSoup(self.content, 'lxml')
+        self.soup = BeautifulSoup(self.content, 'html.parser')
 
     def _get_posts_from_content(self):
         self.posts = self.soup.find_all('div', class_='_427x')

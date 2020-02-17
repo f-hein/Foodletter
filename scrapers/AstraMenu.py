@@ -30,7 +30,7 @@ class AstraMenu:
         self.content = self.page.content.decode('utf-8', errors='ignore').replace('&oacute;', 'ó').replace('&nbsp;', '')
 
     def _create_soup_object(self):
-        self.soup = BeautifulSoup(self.content, 'lxml')
+        self.soup = BeautifulSoup(self.content, 'html.parser')
 
     def _get_tables_from_content(self):
         self.tables = self.soup.find_all('table')[:-1]
