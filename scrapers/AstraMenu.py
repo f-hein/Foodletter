@@ -51,5 +51,7 @@ class AstraMenu:
     def _correct_text(text):
         text = re.sub(r'^\s+', '', text)
         text = re.sub(r'\n[ ]+', '\n', text)
+        text = re.sub(r'-\n', '\n', text)
         text = re.sub(r'[ ]{2,}', ' ', text)
+        text = re.sub(r'\n{2,}', '\n', text)
         return text
