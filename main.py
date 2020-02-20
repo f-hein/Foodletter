@@ -23,7 +23,7 @@ def run_foodletter():
     for site in sites:
         site.mail_checker.check_for_subscription_emails()
         if 0 <= today < 5 and not site.state.mails_were_sent_today() and site.all_menus_exist():
-            email_object = site.mail_creator.create_email(site.email, None, msg_body=site.get_and_format_menus())
+            email_object = site.mail_creator.create_email(None, msg_body=site.get_and_format_menus())
             list_of_emails = site.mailing_list.get_mails()
             for mail in list_of_emails:
                 email_object['To'] = mail
