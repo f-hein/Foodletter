@@ -6,5 +6,5 @@ footer = "\n\nhttps://pajacyk.pl/ - Kliknij i pomóż dzieciom!\n"\
                  "ABY ODSUBSKRYBOWAĆ LISTĘ MAILINGOWĄ WYŚLIJ MAIL O TREŚCI 'UNSUBSCRIBE' NA ADRES BOTA."
 
 
-def default_subject():
+def get_default_subject():
     return f"[FOODBOT][{date.today()}] What's cooking? :)"

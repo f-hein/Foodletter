@@ -3,8 +3,8 @@ from pathlib import Path
 
 
 class State:
-    def __init__(self):
-        self.state_filepath = 'logger_state.txt'
+    def __init__(self, location="WL"):
+        self.state_filepath = f'{location}_logger_state.txt'
 
     def mails_were_sent_today(self):
         with open(self.state_filepath, 'r') as state_file:
