@@ -15,7 +15,11 @@ class FacebookPage(ABC):
         self._get_page()
         self._decode_content()
         self._create_soup_object()
-        self._get_posts_from_content()
+        self.posts = self._get_posts_from_content()
+
+    @abstractmethod
+    def get_todays_menu(self) -> dict:
+        raise NotImplementedError
 
     def _get_page(self):
         self.page = requests.get(self.fanpage_url)
@@ -27,7 +31,7 @@ class FacebookPage(ABC):
         self.soup = BeautifulSoup(self.content, 'html.parser')
 
     def _get_posts_from_content(self):
-        self.posts = self.soup.find_all('div', class_='_427x')
+        return self.soup.find_all('div', class_='_427x')
 
     @staticmethod
     def _correct_text(text):
@@ -35,13 +39,20 @@ class FacebookPage(ABC):
         text = re.sub(',[ ]+', ', ', text)
         text = re.sub(r'[\W]*(,)[\W]*', ', ', text)
         text = re.sub('[ ]+', ' ', text)
+        text = re.sub('(?<!\\n) --(?=[a-zA-Z]+)', '\n-', text)
+        text = re.sub('\\n\(', ' (', text)
+        text = re.sub('--', '-', text)
+        text = re.sub('\.\.\.', '', text)
+        text = re.sub('^[ ]+', '', text)
+        text = re.sub('\\n \(', ' (', text)
         return text.replace(' ,', ',') \
             .replace(' :', ': ') \
             .replace(' *', ' \n') \
-            .replace('  -', '\n  ')
+            .replace('  -', '\n  ') \
+            .replace('\n ', '\n')
 
     @staticmethod
-    def _format_p(entry_from_menu):  # Cockpeat uses this
+    def _format_p(entry_from_menu):
         formatted_entry = ''
         for elem in entry_from_menu.contents:
             if type(elem) is NavigableString:
@@ -51,7 +62,3 @@ class FacebookPage(ABC):
                 formatted_entry += elem.text if elem.text else '\n'
         formatted_entry += '\n'
         return formatted_entry
-
-    @abstractmethod
-    def get_todays_menu(self) -> dict:
-        pass

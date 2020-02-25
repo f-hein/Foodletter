@@ -3,7 +3,7 @@ from abc import ABC
 
 from emails import SubscriptionChecker, MailSender, MailingList, MailCreator
 from emails import State
-from scrapers import AstraMenu, CockpeatMenu, ObiadeoMenu
+from scrapers import AstraMenu, CockpeatMenu, ObiadeoMenu, KameMenu
 
 
 class Site(ABC):
@@ -50,7 +50,4 @@ class Wests(Site):
 class GreenTowers(Site):
     def __init__(self, email, password, send_confirmation_mails=True):
         super().__init__('GT', email, password, send_confirmation_mails)
-        self.scrapers = None
-
-    def all_menus_exist(self):
-        return False
+        self.scrapers = [KameMenu]
