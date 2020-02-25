@@ -4,6 +4,7 @@ from abc import ABC
 from emails import SubscriptionChecker, MailSender, MailingList, MailCreator
 from emails import State
 from scrapers import AstraMenu, CockpeatMenu, ObiadeoMenu, KameMenu
+from bot_credentials import WL_USERNAME, WL_PASSWORD, GT_USERNAME, GT_PASSWORD
 
 
 class Site(ABC):
@@ -42,12 +43,12 @@ class Site(ABC):
 
 
 class Wests(Site):
-    def __init__(self, email, password, send_confirmation_mails=True):
+    def __init__(self, email=WL_USERNAME, password=WL_PASSWORD, send_confirmation_mails=True):
         super().__init__('WL', email, password, send_confirmation_mails)
         self.scrapers = [AstraMenu, CockpeatMenu, ObiadeoMenu]
 
 
 class GreenTowers(Site):
-    def __init__(self, email, password, send_confirmation_mails=True):
+    def __init__(self, email=GT_USERNAME, password=GT_PASSWORD, send_confirmation_mails=True):
         super().__init__('GT', email, password, send_confirmation_mails)
         self.scrapers = [KameMenu]

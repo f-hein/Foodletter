@@ -21,7 +21,7 @@ class MailCreator:
         return msg
 
     @staticmethod
-    def _get_body_with_added_date_and_footer(msg_body):
+    def _get_body_with_added_date_and_footer(msg_body) -> str:
         return f'{date.today()}\n{msg_body}\n{footer}'
 
 
@@ -30,12 +30,12 @@ class MailSender:
         self.email = email
         self.password = password
 
-    def send_mail_to_many_recipients(self, recipients: list, email_object: MIMEMultipart):
+    def send_mail_to_many_recipients(self, recipients: list, email_object: MIMEMultipart) -> None:
         for mail in recipients:
             email_object.replace_header("To", mail)
             self.send_mail_to_one_recipient(mail, email_object)
 
-    def send_mail_to_one_recipient(self, recipient: str, email_object: MIMEMultipart):
+    def send_mail_to_one_recipient(self, recipient: str, email_object: MIMEMultipart) -> None:
         try:
             self._send_email(email_object)
             logging.info(f"Mail sent to {recipient}")
@@ -67,14 +67,14 @@ class SubscriptionChecker:
             self._check_subscription_requests(sender_email, subject, body)
 
     @staticmethod
-    def _get_sender_mail(body):
+    def _get_sender_mail(body) -> str:
         return re.findall('<(.*)>', str(body[1][1]))[0]
 
     @staticmethod
-    def _get_subject(body):
+    def _get_subject(body) -> str:
         return re.findall('(?<=Subject: )[a-zA-Z ]*', str(body[1][1]))[0].upper()
 
-    def _check_subscription_requests(self, sender_email: str, subject: str, body: str):
+    def _check_subscription_requests(self, sender_email: str, subject: str, body: str) -> None:
         key_words = ['SUBSCRIBE', 'UNSUBSCRIBE']
         for key_word in key_words:
             if key_word in subject or key_word in body:
@@ -83,7 +83,7 @@ class SubscriptionChecker:
                 if self.send_confirmation_mails:
                     self._send_confirmation_email(key_word, sender_email)
 
-    def _send_confirmation_email(self, subscribe_state, recipient):
+    def _send_confirmation_email(self, subscribe_state, recipient) -> None:
         subject = f"{subscribe_state.lower()}d"
         body = f"You've been successfully {subscribe_state.lower()}d!"
         email_object = MailCreator().create_email(self.email, recipient, subject=subject, msg_body=body)
@@ -93,7 +93,7 @@ class SubscriptionChecker:
         _, response = self.imap.search(None, '(UNSEEN)')
         return response[0].split()
 
-    def _get_core_data_by_email_id(self, email_id):
+    def _get_core_data_by_email_id(self, email_id) -> tuple:
         _, body = self.imap.fetch(email_id, '(BODY[TEXT] BODY[HEADER.FIELDS (FROM SUBJECT)])')
         sender_email = self._get_sender_mail(body)
         subject = self._get_subject(body)
