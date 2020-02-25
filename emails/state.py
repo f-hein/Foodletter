@@ -4,7 +4,7 @@ from pathlib import Path
 
 class State:
     def __init__(self, location="WL"):
-        self.state_filepath = f'{location}_logger_state.txt'
+        self.state_filepath = f'logger_state_{location}.txt'
 
     def mails_were_sent_today(self):
         with open(self.state_filepath, 'r') as state_file:
@@ -17,6 +17,6 @@ class State:
             with open(self.state_filepath, 'w') as state_file:
                 state_file.write(f"Last sent:\n{date.today() - timedelta(1)}")
 
-    def log_todays_date(self):
+    def log_emails_were_sent(self):
         with open(self.state_filepath, 'w') as state_file:
             state_file.write(f"Last sent:\n{date.today()}")

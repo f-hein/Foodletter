@@ -3,7 +3,7 @@ import logging
 
 class MailingList:
     def __init__(self, location="WL"):
-        self.subs_filepath = f'{location}_subscribers_list.txt'
+        self.subs_filepath = f'subscribers_list_{location}.txt'
 
     def add(self, email: str) -> None:
         with open(self.subs_filepath, 'a+') as subs_file:
