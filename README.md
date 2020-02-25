@@ -12,6 +12,9 @@ It uses gmail account to send scraped information about menus and receive subscr
 TBA
 
 ### private TODO list:
-- [ ] Add unit tests (finally)
+- [ ] Add unit tests
 - [ ] Send mail to a newly subscribed person IF foodletter was sent that day
-- [ ] **Create Foodsletter_GT - add Kame Wro (FB), Green Towers Bistro, Meet&Eat Santander**
+- [ ] Create Foodsletter_GT
+  - ~~add Kame Wro~~,  **DONE!**
+  - add Green Towers Bistro, 
+  - add Meet&Eat Santander
