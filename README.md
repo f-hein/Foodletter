@@ -16,5 +16,5 @@ TBA
 - [ ] Send mail to a newly subscribed person IF foodletter was sent that day
 - [ ] Create Foodsletter_GT
   - ~~add Kame Wro~~,  **DONE!**
-  - add Green Towers Bistro, 
+  - ~~add Green Towers Bistro~~,  **DONE!** 
   - add Meet&Eat Santander
