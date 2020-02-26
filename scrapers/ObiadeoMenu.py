@@ -5,10 +5,11 @@ from datetime import datetime
 from bs4 import NavigableString
 
 from scrapers.FacebookPage import FacebookPage
+from scrapers.IMenu import IMenu
 from tools.levenshtein_distance import calc_levenshtein
 
 
-class ObiadeoMenu(FacebookPage):
+class ObiadeoMenu(IMenu, FacebookPage):
     def __init__(self):
         super().__init__(fanpage_url='https://www.facebook.com/pg/obiadeo/posts')
 

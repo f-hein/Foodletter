@@ -2,10 +2,11 @@
 import re
 import datetime
 from scrapers.FacebookPage import FacebookPage
+from scrapers.IMenu import IMenu
 from tools.levenshtein_distance import calc_levenshtein
 
 
-class KameMenu(FacebookPage):
+class KameMenu(IMenu, FacebookPage):
     def __init__(self):
         super().__init__(fanpage_url='https://www.facebook.com/pg/kame.wro/posts')
 

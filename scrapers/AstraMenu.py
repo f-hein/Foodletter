@@ -5,8 +5,10 @@ from datetime import datetime
 import requests
 from bs4 import BeautifulSoup
 
+from scrapers.IMenu import IMenu
 
-class AstraMenu:
+
+class AstraMenu(IMenu):
     def __init__(self):
         self.menu_url = 'http://www.astra-catering.pl/zestaw-dnia.html'
         self.day_of_the_week = datetime.today().weekday()
@@ -54,4 +56,5 @@ class AstraMenu:
         text = re.sub(r'-\n', '\n', text)
         text = re.sub(r'[ ]{2,}', ' ', text)
         text = re.sub(r'\n{2,}', '\n', text)
+        text = re.sub(r': \n', ': ', text)
         return text

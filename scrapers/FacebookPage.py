@@ -17,10 +17,6 @@ class FacebookPage(ABC):
         self._create_soup_object()
         self.posts = self._get_posts_from_content()
 
-    @abstractmethod
-    def get_todays_menu(self) -> dict:
-        raise NotImplementedError
-
     def _get_page(self):
         self.page = requests.get(self.fanpage_url)
 

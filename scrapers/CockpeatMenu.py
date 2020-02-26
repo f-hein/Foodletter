@@ -2,10 +2,11 @@
 import re
 
 from scrapers.FacebookPage import FacebookPage
+from scrapers.IMenu import IMenu
 from tools.levenshtein_distance import calc_levenshtein
 
 
-class CockpeatMenu(FacebookPage):
+class CockpeatMenu(IMenu, FacebookPage):
     def __init__(self):
         super().__init__(fanpage_url='https://www.facebook.com/pg/COCKPEAT/posts')
 
