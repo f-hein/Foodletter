@@ -11,7 +11,7 @@ class GreenTowersBistroMenu(IMenu):
         self.menu_url = 'http://www.bistrogreentowers.pl/menu-tygodniowe'
         self.day_of_the_week = datetime.today().weekday()
         self.weekly_menu = list()
-        self._get_page(self.day_of_the_week+1)
+        self._get_page()
         self._decode_content()
         self._create_soup_object()
         self._get_tables_from_content()
@@ -22,7 +22,7 @@ class GreenTowersBistroMenu(IMenu):
         else:
             return {'green_towers_bistro_menu': ''}
 
-    def _get_page(self, day_of_the_week):
+    def _get_page(self):
         self.page = requests.get(self.menu_url)
 
     def _decode_content(self):
@@ -34,10 +34,16 @@ class GreenTowersBistroMenu(IMenu):
     def _get_tables_from_content(self):
         self.table = self.soup.find_all('table')[self.day_of_the_week]
 
-    def _get_menu(self):
+    def _get_menu(self) -> str:
         tds = self.table.find_all("td")
-        soup = "Zupa: {}".format(tds[1].text)
+        soups = list()
+        for td in tds[1:]:
+            if not td.has_attr("class"):
+                soups.append("Zupa nr {}: {}".format(len(soups)+1, td.text))
+            else:
+                break
         featured_dishes = ["Danie dnia nr {}: {}".format(index+1, dishes) for index, dishes in
                            enumerate([x.text.replace("*", "") for x in tds if '*' in x.text])]
-        featured_dishes = [soup] + featured_dishes
+        featured_dishes = soups + featured_dishes
+        featured_dishes = '\n'.join(featured_dishes)
         return featured_dishes
