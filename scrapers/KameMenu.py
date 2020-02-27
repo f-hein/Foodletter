@@ -34,7 +34,7 @@ class KameMenu(IMenu, FacebookPage):
                 for menu_entry in menu_entries:
                     todays_menu += self._correct_text(self._format_p(menu_entry))
                 break
-        return '\n'.join(todays_menu.split('\n')[1:])  # deleting the first line of memu (redundant)
+        return '\n'.join([row for row in todays_menu.split('\n') if row != ""][1:-1])
 
     @staticmethod
     def _is_todays_date_in_post(post):

@@ -14,8 +14,9 @@ class FoodletterLogic:
         for site in self.sites:
             site.subscription_checker.check()
             if 0 <= today < 5 and not site.state.mails_were_sent_today() and site.all_menus_exist():
-                self._prepare_and_send_mails(site)
-            elif 0 <= today < 5 and not site.state.mails_were_sent_today() and now.hour > 10 and now.minute > 30:
+                if now.hour >= 9 and now.minute >= 15:  # just to be sure that GT doesn't send mails at 0:01
+                    self._prepare_and_send_mails(site)
+            elif 0 <= today < 5 and not site.state.mails_were_sent_today() and now.hour >= 10 and now.minute >= 30:
                 self._prepare_and_send_mails(site)
 
     @staticmethod

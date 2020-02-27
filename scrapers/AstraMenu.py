@@ -57,4 +57,6 @@ class AstraMenu(IMenu):
         text = re.sub(r'[ ]{2,}', ' ', text)
         text = re.sub(r'\n{2,}', '\n', text)
         text = re.sub(r': \n', ': ', text)
+        text = re.sub(r'\n$', '', text)
+        text = re.sub(r'(?<=[a-zA-Z0-9]):(?=[a-zA-Z])', ': ', text)
         return text

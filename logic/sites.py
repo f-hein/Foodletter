@@ -36,7 +36,7 @@ class Site(ABC):
 
     def get_and_format_menus(self) -> str:
         formatted_mesage = ""
-        template = "\n### {} ###\n{}"
+        template = "\n### {} ###\n{}\n"
         for place_name, menu in self.get_all_menus().items():
             formatted_mesage += template.format(place_name.replace("_", " ").upper(), menu)
         return formatted_mesage
