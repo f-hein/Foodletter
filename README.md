@@ -9,12 +9,10 @@ It uses gmail account to send scraped information about menus and receive subscr
 - Obiadeo.
 
 ***GTA/GTB:***
-TBA
+- Kame Wroclaw,
+- Green Towers Bistro
 
 ### private TODO list:
 - [ ] Add unit tests
 - [ ] Send mail to a newly subscribed person IF foodletter was sent that day
-- [ ] Create Foodsletter_GT
-  - ~~add Kame Wro~~,  **DONE!**
-  - ~~add Green Towers Bistro~~,  **DONE!** 
-  - add Meet&Eat Santander
+- [ ] Add Meet&Eat Wroclaw to GTA/GTB 
