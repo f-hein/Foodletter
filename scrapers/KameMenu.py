@@ -40,4 +40,4 @@ class KameMenu(IMenu, FacebookPage):
     def _is_todays_date_in_post(post):
         d = datetime.date.today()
         todays_date = f"{d.day:02d}.{d.month:02d}"
-        return todays_date in post
+        return todays_date in post or f"({todays_date[1:]})" in post
