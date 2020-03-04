@@ -56,15 +56,24 @@ class SubscriptionChecker:
         self.password = password
         self.site = site
         self.send_confirmation_mails = send_confirmation_mails
-        self.imap = imaplib.IMAP4_SSL("imap.gmail.com", 993)
-        self.imap.login(email, password)
-        self.imap.select('INBOX')
+        self.imap = None
 
     def check(self) -> None:
+        self._create_imap_connection_and_select_inbox()
         unread_mails_ids = self._get_unread_mails_ids()
         for email_id in unread_mails_ids:
             sender_email, subject, body = self._get_core_data_by_email_id(email_id)
             self._check_subscription_requests(sender_email, subject, body)
+        self._delete_imap_connection()
+
+    def _create_imap_connection_and_select_inbox(self):
+        self.imap = imaplib.IMAP4_SSL("imap.gmail.com", 993)
+        self.imap.login(self.email, self.password)
+        self.imap.select('INBOX')
+
+    def _delete_imap_connection(self):
+        self.imap.close()
+        del self.imap
 
     @staticmethod
     def _get_sender_mail(body) -> str:
