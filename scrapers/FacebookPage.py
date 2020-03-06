@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import re
-from abc import ABC, abstractmethod
+from abc import ABC
 from datetime import datetime
 
 import requests

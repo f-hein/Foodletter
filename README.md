@@ -22,5 +22,4 @@ Used variables' names are: `WL_USERNAME, WL_PASSWORD, WG_USERNAME, WG_PASSWORD`.
 - [ ] Add unit tests
 - [ ] Send mail to a newly subscribed person IF foodletter was sent that day
 - [ ] Add Meet&Eat Wroclaw to GTA/GTB 
-- [ ] Repair L87/mailer
 - [ ] Add backup of subscribers lists to cloud

@@ -1,10 +1,10 @@
 import logging
 from abc import ABC
 
-from emails import SubscriptionChecker, MailSender, MailingList, MailCreator
-from emails import State
-from scrapers import AstraMenu, CockpeatMenu, ObiadeoMenu, KameMenu, GreenTowersBistroMenu
 from bot_credentials import WL_USERNAME, WL_PASSWORD, GT_USERNAME, GT_PASSWORD
+from emails import State
+from emails import SubscriptionChecker, MailSender, MailingList, MailCreator
+from scrapers import AstraMenu, CockpeatMenu, ObiadeoMenu, KameMenu, GreenTowersBistroMenu
 
 
 class Site(ABC):

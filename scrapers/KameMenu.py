@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
-import re
 import datetime
+import re
+
 from scrapers.FacebookPage import FacebookPage
 from scrapers.IMenu import IMenu
 from tools.levenshtein_distance import calc_levenshtein
