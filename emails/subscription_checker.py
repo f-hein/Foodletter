@@ -42,8 +42,10 @@ class SubscriptionChecker:
         key_words = ['UNSUBSCRIBE', 'SUBSCRIBE']
         for key_word in key_words:
             if key_word in subject or key_word in body:
-                MailingList(self.site).add(sender_email) if key_word == 'SUBSCRIBE' \
-                    else MailingList(self.site).delete(sender_email)
+                if key_word == 'SUBSCRIBE':
+                    MailingList(self.site).add(sender_email)
+                else:
+                    MailingList(self.site).delete(sender_email)
                 if self.send_confirmation_mails:
                     self._send_confirmation_email(key_word, sender_email)
 
