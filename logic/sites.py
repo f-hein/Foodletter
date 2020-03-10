@@ -4,7 +4,7 @@ from abc import ABC
 from bot_credentials import WL_USERNAME, WL_PASSWORD, GT_USERNAME, GT_PASSWORD
 from emails import State
 from emails import SubscriptionChecker, MailSender, MailingList, MailCreator
-from scrapers import AstraMenu, CockpeatMenu, ObiadeoMenu, KameMenu, GreenTowersBistroMenu
+from scrapers import AstraMenu, CockpeatMenu, ObiadeoMenu, KameMenu, GreenTowersBistroMenu, MeetingPointMenu
 
 
 class Site(ABC):
@@ -51,4 +51,4 @@ class Wests(Site):
 class GreenTowers(Site):
     def __init__(self, email=GT_USERNAME, password=GT_PASSWORD, send_confirmation_mails=True):
         super().__init__('GT', email, password, send_confirmation_mails)
-        self.scrapers = [GreenTowersBistroMenu, KameMenu]
+        self.scrapers = [GreenTowersBistroMenu, MeetingPointMenu, KameMenu]

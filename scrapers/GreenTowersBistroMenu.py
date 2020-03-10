@@ -10,11 +10,10 @@ class GreenTowersBistroMenu(IMenu):
     def __init__(self):
         self.menu_url = 'http://www.bistrogreentowers.pl/menu-tygodniowe'
         self.day_of_the_week = datetime.today().weekday()
-        self.weekly_menu = list()
         self._get_page()
         self._decode_content()
         self._create_soup_object()
-        self._get_tables_from_content()
+        self._get_table_from_content()
 
     def get_todays_menu(self) -> dict:
         if self.day_of_the_week < 5:
@@ -31,7 +30,7 @@ class GreenTowersBistroMenu(IMenu):
     def _create_soup_object(self):
         self.soup = BeautifulSoup(self.content, 'html.parser')
 
-    def _get_tables_from_content(self):
+    def _get_table_from_content(self):
         self.table = self.soup.find_all('table')[self.day_of_the_week]
 
     def _get_menu(self) -> str:
