@@ -1,3 +1,5 @@
+### DISCLAIMER: Due to COVID-19 and lack of usefulness, development of this project is officially stopped.
+
 # Foodletter
 Foodletter is a simple mailing app providing you with the newest foodcourts' menus located near TC Nokia Wroclaw - Green Towers A & B (Strzegomska 36) and West Link & West Gate (Szybowcowa 2). 
 It uses gmail account to send scraped information about menus and receive subscription emails.
