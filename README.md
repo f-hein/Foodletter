@@ -13,6 +13,7 @@ It uses gmail account to send scraped information about menus and receive subscr
 ***GTA/GTB:***
 - Kame Wroclaw,
 - Green Towers Bistro
+- Meeting Point
 
 ### How to use it?
 Just download this repository - every scraper works OOTB.
